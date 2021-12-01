@@ -7,6 +7,10 @@
 
 #include "utils.h"
 
+const char* g_szDir = "d:/workroom/testroom/snapshot";
+const char* g_szPrefix = "lol";
+int g_nStartCount = 0;
+
 
 class MyHook {
 public:
@@ -85,8 +89,11 @@ LRESULT WINAPI MyKeyBoardCallback(int nCode, WPARAM wParam, LPARAM lParam)
 					if (OpenClipboard(NULL)) {
 						if ((hBmp = (HBITMAP)GetClipboardData(CF_BITMAP)) != NULL) {
 							//将这个hBmp写入文件，你总会吧。
-							printf_s("save...\n");
-                            SaveBitmapToFile(hBmp, "d:/1.bmp");
+							char szFilename[200] = "\0";
+							sprintf_s(szFilename, "%s/%s_%d.bmp", g_szDir, g_szPrefix, g_nStartCount++);
+							printf_s("save to %s...\n", szFilename);
+
+                            SaveBitmapToFile(hBmp, szFilename);
 							CloseClipboard();
 						}
 					}
